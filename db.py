@@ -1,27 +1,62 @@
 import sqlite3
 
 
-class SqliteDB:
+class ScndBrainDB:
     DB_NAME = "scnd_brain.db"
 
     def __init__(self):
-        self.con = sqlite3.connect(self.DB_NAME)
-        self.cur = self.con.cursor()
+        self.connection = sqlite3.connect(self.DB_NAME)
+        self.cursor = self.connection.cursor()
 
-        self.create_task_table()
+        # Initialize the tables
+        self.create_book_table()
 
-    def create_task_table(self) -> None:
+    def __del__(self):
+        self.connection.close()
+
+    def create_book_table(self) -> None:
         query = """
-        CREATE TABLE IF NOT EXISTS task (
-        id type,
-        title type,
-        cor3 type,
+        CREATE TABLE IF NOT EXISTS book (
+        title TEXT,
+        author TEXT,
+        published INTEGER,
+        state_id INTEGER
         )
         """
-        self.cur.execute(query)
+        self.cursor.execute(query)
 
-    def insert_task(self):
-        ...
+    def create_state_table(self) -> None:
+        query = """
+        CREATE TABLE IF NOT EXISTS state (
+        title TEXT
+        )
+        """
+        self.cursor.execute(query)
 
-    def get_task(self):
-        ...
+    def test_insert(self) -> None:
+        query = """
+        insert into book values
+        ("War and Peace", "Lev Tolstoy", 1869, 1)
+        """
+        self.cursor.execute(query)
+
+    def test_select(self) -> list[dict]:
+        query = """
+        select * from book
+        """
+        result = self.cursor.execute(query).fetchall()
+        return result
+
+    def drop_tables(self) -> None:
+        query = """
+        drop table book
+        """
+        self.cursor.execute(query)
+
+if __name__ == "__main__":
+    db = ScndBrainDB()
+    db.test_insert()
+    result = db.test_select()
+    print(result)
+    db.drop_tables()
+    
