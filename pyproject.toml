@@ -10,6 +10,7 @@ packages = [{include = "scnd_brain"}]
 python = "^3.10"
 black = "^23.7.0"
 isort = "^5.12.0"
+pydantic = "^2.3.0"
 
 
 [build-system]

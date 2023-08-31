@@ -1,5 +1,7 @@
 import sqlite3
 
+from models import Book
+
 
 class ScndBrainDB:
     DB_NAME = "scnd_brain.db"
@@ -33,6 +35,11 @@ class ScndBrainDB:
         """
         self.cursor.execute(query)
 
+    def insert_book(self, book: Book) -> None:
+        query = """
+        INSERT INTO book ()
+        """
+
     def test_insert(self) -> None:
         query = """
         insert into book values
@@ -53,10 +60,10 @@ class ScndBrainDB:
         """
         self.cursor.execute(query)
 
+
 if __name__ == "__main__":
     db = ScndBrainDB()
     db.test_insert()
     result = db.test_select()
     print(result)
     db.drop_tables()
-    
