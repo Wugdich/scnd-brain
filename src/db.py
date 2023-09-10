@@ -4,7 +4,7 @@ from models import Book
 
 
 class ScndBrainDB:
-    DB_NAME = "scnd_brain.db"
+    DB_NAME = "../scnd_brain.db"
 
     def __init__(self):
         self.connection = sqlite3.connect(self.DB_NAME)
