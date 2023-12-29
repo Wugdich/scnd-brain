@@ -5,3 +5,4 @@
 - add 'what to read?' future
 - add financial assistant future
 - add logging
+- give a good name for project

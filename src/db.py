@@ -1,13 +1,12 @@
 import sqlite3
 
+from config import DB_PATH
 from models import Book
 
 
 class ScndBrainDB:
-    DB_NAME = "../scnd_brain.db"
-
     def __init__(self):
-        self.connection = sqlite3.connect(self.DB_NAME)
+        self.connection = sqlite3.connect(DB_PATH)
         self.connection.row_factory = sqlite3.Row
         self.cursor = self.connection.cursor()
 
@@ -32,7 +31,7 @@ class ScndBrainDB:
         title TEXT,
         author TEXT,
         published INTEGER,
-        state_id INTEGER
+        read_times INTEGER
         )
         """
         self.cursor.execute(query)
@@ -54,8 +53,15 @@ class ScndBrainDB:
 
     def insert_book(self, book: Book) -> None:
         query = """
-        INSERT INTO book ()
+        INSERT INTO book VALUES (
+            :title, 
+            :author, 
+            :published, 
+            :read_times
+            )
         """
+        self.cursor.execute(query, book.model_dump())
+        self.connection.commit()
 
     def test_insert(self) -> None:
         query = """
@@ -66,7 +72,7 @@ class ScndBrainDB:
 
     def test_select(self) -> list[dict]:
         query = """
-        select * from shopping
+        select * from book
         """
         result = self.cursor.execute(query).fetchall()
         return result
@@ -79,8 +85,11 @@ class ScndBrainDB:
 
 
 if __name__ == "__main__":
+    print("Start testing db.py module.")
     db = ScndBrainDB()
-    db.insert_item("Milk")
+    book = Book(title="Little Prince", author="Exuperi", published=1947, read_times=2)
+    db.insert_book(book)
     result = db.test_select()
     print(result[0]["title"])
     db.drop_tables()
+    print("End testing db.py module.")
